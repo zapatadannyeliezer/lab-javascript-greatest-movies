@@ -35,17 +35,10 @@ function scoresAverage(moviesArray) {
 
 // Iteration 4: Drama movies - Get the average of Drama Movies
 function dramaMoviesScore(moviesArray) {
-    const dramaMovies = moviesArray.filter(movies => movies.genre.includes('Drama'));
-
-    if(dramaMovies.length === 0){
-        return 0;
-    }
-    let todos = dramaMovies.reduce((previousValue, currentvalue) => previousValue + currentvalue.score,);
-    let promedio = todos / dramaMovies.length;
-    promedio = Number(promedio.toFixed(2));
-     //Math.round(dramaMovies *  100) / 100;
-    return promedio;
-    
+    const dramaMovies = moviesArray.filter(function(eachMovie) {
+return eachMovie.genre.includes("Drama")
+});
+  return scoresAverage(dramaMovies);
 }
 
 
@@ -68,10 +61,74 @@ function orderByYear(moviesArray) {
 }
 
 // Iteration 6: Alphabetic Order - Order by title and print the first 20 titles
-function orderAlphabetically(moviesArray) {}
+function orderAlphabetically(moviesArray) {
+const movies = JSON.parse(JSON.stringify(moviesArray));
+
+sorte = movies
+.sort((a, b) => {
+    if (a.title > b.title) {
+        return 1;
+    } else if (a.title < b.title) {
+        return -1;
+    }else {
+        return 0;
+    }
+})
+.map(eachMovie => eachMovie.title)
+.slice(0, 20);
+
+return sorte;
+}
+
+   /*  let titles = movie => movie.title < 20;
+    let filtrados = moviesArray.filter(titles);
+    filtrados.sort();
+    return filtrados; */
 
 // BONUS - Iteration 7: Time Format - Turn duration of the movies from hours to minutes
-function turnHoursToMinutes(moviesArray) {}
+function turnHoursToMinutes(moviesArray) {
+    function changeHours(hourString){
+        let calcularHoras = hourString.split('h');
+        return Number(calcularHoras[0]) * 60;
+    }
+
+    function changeMinutes(minuteString) {
+        let calcularMinutes = minuteString.split("min");
+        return Number(calcularMinutes[0]);
+    }
+
+    function changeDuration(duration) {
+        let timePieces = duration.split(' ');
+
+        let minutos = timePieces.reduce((sum, onePiece) => {
+            if(onePiece.includes('h')) {
+                return sum + changeHours(onePiece);
+            }
+            return sum + changeMinutes(onePiece);
+        }, 0);
+        return minutos;
+    }
+    let moviesHoursToMinArr = moviesArray.map(function(eachMovie){
+        let fixeMovie = JSON. parse(JSON.stringify(eachMovie))
+        fixeMovie.duration = changeDuration(fixeMovie.duration)
+        return fixeMovie
+    })
+
+    return moviesHoursToMinArr;
+}
+
+
 
 // BONUS - Iteration 8: Best yearly score average - Best yearly score average
-function bestYearAvg(moviesArray) {}
+function bestYearAvg(moviesArray) {
+    let puntuacion = bestYearAvg.length;
+    bestYearAvg = bestYearAvg.reduce((moviesArray, score) => score += moviesArray);
+    bestYearAvg /= puntuacion;
+    
+    bestYearAvg.sort((a, b) => a - b);
+    let mediaBaja = Math.floor((bestYearAvg.length - 1) /2);
+    let mediaAlta = Math.ceil((bestYearAvg.length - 1) /2);
+    let median = (bestYearAvg[mediaBaja] + bestYearAvg[mediaAlta]) / 2;
+    return median;
+}
+ 
